@@ -1,0 +1,11 @@
+.actualites {
+    padding: 40px;
+  }
+  .actualites h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+  .actualites p {
+    color: #666;
+  }
+  

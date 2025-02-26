@@ -1,0 +1,11 @@
+.dossiers {
+    padding: 40px;
+  }
+  .dossiers h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+  .dossiers p {
+    color: #666;
+  }
+  
