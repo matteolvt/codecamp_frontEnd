@@ -1,7 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // Importation de useNavigate
 import "./heroSection.css";
 
 export const HeroSection = () => {
+  const navigate = useNavigate(); // Hook pour la navigation
+
+  const handleReportClick = () => {
+    navigate("/signaler"); // Redirection vers la page de signalement
+  };
+
   return (
     <div
       className="relative text-white text-center py-16 flex flex-col items-center justify-center bg-cover bg-center h-200"
@@ -15,7 +22,10 @@ export const HeroSection = () => {
         <p className="mt-2">
           Un espace sécurisé pour signaler les abus et injustices
         </p>
-        <button className="bg-blue-700 px-6 py-2 mt-4 rounded text-white font-semibold">
+        <button
+          onClick={handleReportClick}
+          className="bg-blue-700 px-6 py-2 mt-4 rounded text-white font-semibold"
+        >
           Faire un signalement
         </button>
       </div>
