@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./homeSections.css";
 
 export const InfoCards = () => {
@@ -9,7 +10,7 @@ export const InfoCards = () => {
         "Consultez les signalements récents et suivez les actions entreprises.",
       color: "bg-blue-900",
       arrowColor: "bg-orange-400",
-      link: "#dernieres-denonciations",
+      link: "/actualites", 
     },
     {
       title: "Comment faire la démarche ?",
@@ -32,7 +33,7 @@ export const InfoCards = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-8 pb-8 text-center">
       {cards.map((card, index) => (
-        <a key={index} href={card.link} className="relative block h-50">
+        <Link key={index} to={card.link} className="relative block h-50">
           <div
             className={`relative ${card.color} text-white p-6 rounded shadow flex flex-col items-center justify-between h-full`}
           >
@@ -44,7 +45,7 @@ export const InfoCards = () => {
               <span className="text-black text-xl">→</span>
             </div>
           </div>
-        </a>
+        </Link>
       ))}
     </div>
   );

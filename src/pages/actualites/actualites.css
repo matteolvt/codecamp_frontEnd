@@ -1,0 +1,84 @@
+.actualites-container {
+    padding: 20px;
+}
+  
+.content {
+    display: flex;
+    gap: 20px;
+}
+  
+/* Filtres à droite */
+.filters {
+    width: 250px;
+    padding: 20px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    height: fit-content;
+}
+
+/* Titres Région & Catégories */
+.filters h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #000091; /* Bleu marine */
+    font-weight: bold;
+}
+
+/* Espacement supplémentaire entre Région et Catégories */
+.filters h3:nth-of-type(2) {
+    margin-top: 30px; /* Ajout de plus d’espace avant "📌 Catégories" */
+}
+
+.filter-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.filter-label input {
+    width: 18px;
+    height: 18px;
+    accent-color: #000091;
+}
+  
+/* Grid des dénonciations */
+.denonces-grid {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Augmenté pour plus d'espace */
+    gap: 20px;
+}
+  
+/* Cartes des dénonciations */
+.denonce-card {
+    border: 1px solid #ccc;
+    padding: 20px; /* Augmenté pour plus d'espace */
+    border-radius: 10px;
+    background: white;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.denonce-card:hover {
+    transform: translateY(-5px);
+}
+  
+.denonce-card h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px; /* Espacement augmenté */
+}
+  
+.denonce-card p {
+    font-size: 16px;
+    margin-bottom: 8px; /* Espacement entre les paragraphes */
+}
+  
+.denonce-card strong {
+    font-weight: bold;
+    color: #000091; /* Bleu marine */
+}

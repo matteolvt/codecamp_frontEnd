@@ -8,6 +8,8 @@ import { SignalerUnFait } from "./pages/signalerUnFait/signalerUnFait";
 import { AuthPage } from "./pages/login/login";
 import Dashboard from "./pages/dashboard/dashboard";
 import Forbidden from "./pages/Forbidden.jsx/Forbidden";
+import { Actualites } from "./pages/actualites/actualites"; // Nouvelle route Actualites
+import { Notifications } from "./components/notifications/notifications"; // Importation du composant Notifications
 
 const AppContent = () => {
   const location = useLocation();
@@ -18,12 +20,14 @@ const AppContent = () => {
   return (
     <>
       {!hideHeaderFooter && <Header />}
+      <Notifications /> {/* 🔔 Ajout des notifications globales */}
       <div className="p-0">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/vos-demarches" element={<VosDemarches />} />
           <Route path="/signaler" element={<SignalerUnFait />} />
           <Route path="/connexion" element={<AuthPage />} />
+          <Route path="/actualites" element={<Actualites />} />
           <Route
             path="/dashboard"
             element={
@@ -34,7 +38,7 @@ const AppContent = () => {
               )
             }
           />
-          <Route path="/forbidden" element={<Forbidden />} /> {/* Route vers la page 403 */}
+          <Route path="/forbidden" element={<Forbidden />} /> {/* Page 403 */}
         </Routes>
       </div>
       {!hideHeaderFooter && <Footer />}

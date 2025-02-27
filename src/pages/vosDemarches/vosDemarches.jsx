@@ -18,8 +18,8 @@ export const VosDemarches = () => {
       return;
     }
 
-    fetch("http://localhost:8000/api/user/", {  // Modifiez ici l'URL si nécessaire
-      headers: { "Authorization": `Bearer ${token}` },
+    fetch("http://localhost:8000/api/user/", {
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
         if (!res.ok) {
@@ -42,7 +42,7 @@ export const VosDemarches = () => {
     const token = localStorage.getItem("access_token");
 
     fetch("http://localhost:8000/api/denonciations/", {
-      headers: { "Authorization": `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
         if (!res.ok) {
@@ -52,7 +52,7 @@ export const VosDemarches = () => {
       })
       .then((data) => {
         if (data.features) {
-          // Filtrer les dénonciations dont la propriété "user" correspond à l'id connecté
+          // Filtrer les dénonciations appartenant à l'utilisateur connecté
           const myDenonces = data.features.filter(
             (feature) => feature.properties.user === userId
           );
@@ -67,6 +67,30 @@ export const VosDemarches = () => {
         setLoading(false);
       });
   }, [userId]);
+
+  // 🔴 Fonction pour SUPPRIMER une dénonciation
+  const handleDelete = async (id) => {
+    const token = localStorage.getItem("access_token");
+    if (!window.confirm("Voulez-vous vraiment supprimer cette dénonciation ?")) return;
+
+    try {
+      const response = await fetch(`http://localhost:8000/api/denonciations/${id}/`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!response.ok) {
+        throw new Error("Échec de la suppression");
+      }
+
+      // 🔄 Mise à jour de la liste après suppression
+      setDenonces((prevDenonces) => prevDenonces.filter((d) => d.id !== id));
+      alert("Dénonciation supprimée avec succès !");
+    } catch (error) {
+      console.error("Erreur lors de la suppression :", error);
+      alert("Erreur lors de la suppression !");
+    }
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -83,7 +107,7 @@ export const VosDemarches = () => {
         ) : (
           <ul className="space-y-4">
             {denonces.map((feature) => (
-              <li key={feature.id} className="p-4 border rounded">
+              <li key={feature.id} className="p-4 border rounded flex flex-col space-y-2">
                 <h3 className="font-bold">{feature.properties.titre}</h3>
                 <p>{feature.properties.description}</p>
                 <p>
@@ -96,6 +120,14 @@ export const VosDemarches = () => {
                   <strong>Date :</strong>{" "}
                   {new Date(feature.properties.date_creation).toLocaleString()}
                 </p>
+
+                {/* 🔴 Bouton Supprimer uniquement */}
+                <button
+                  onClick={() => handleDelete(feature.id)}
+                  className="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 mt-2"
+                >
+                  🗑 Supprimer
+                </button>
               </li>
             ))}
           </ul>

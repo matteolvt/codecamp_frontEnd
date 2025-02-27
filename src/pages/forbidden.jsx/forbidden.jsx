@@ -21,8 +21,8 @@ const Forbidden = () => {
         <div
           className="relative z-10 text-center text-white p-8 rounded-xl shadow-xl"
           style={{
-            backgroundColor: "rgba(255, 255, 255, 0.2)", // Boîte semi-transparente
-            backdropFilter: "blur(8px)", // Effet verre dépoli
+            backgroundColor: "rgba(255, 255, 255, 0.2)", 
+            backdropFilter: "blur(8px)", 
             maxWidth: "500px",
           }}
         >
@@ -36,7 +36,7 @@ const Forbidden = () => {
               href="/"
               className="text-black font-bold px-4 py-2 rounded-lg transition duration-300"
               style={{
-                backgroundColor: "rgba(255, 255, 255, 0.8)", // Bouton en fond blanc
+                backgroundColor: "rgba(255, 255, 255, 0.8)", 
                 padding: "10px 20px",
                 borderRadius: "8px",
                 display: "inline-block",
