@@ -20,7 +20,6 @@ export const Map = () => {
 
         const data = await response.json();
         
-        // 🔥 Assurer que data.features existe, sinon on met un tableau vide
         setDenonciations(data.features || []);
         
         console.log("Données récupérées :", data);
@@ -51,11 +50,11 @@ export const Map = () => {
 
       {denonciations.map(
         (denonciation) =>
-          denonciation.geometry && ( // ✅ Vérifier que geometry existe
+          denonciation.geometry && ( 
             <Marker
               key={denonciation.id}
               position={[
-                denonciation.geometry.coordinates[1], // 🔄 Inversion des coordonnées (latitude, longitude)
+                denonciation.geometry.coordinates[1],
                 denonciation.geometry.coordinates[0],
               ]}
             >
