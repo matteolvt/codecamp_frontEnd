@@ -1,0 +1,13 @@
+.leaflet-container {
+    height: 500px !important;
+    width: 100% !important;
+}
+
+#map-container {
+    height: 500px;
+}
+
+#map-container {
+margin-bottom: 20px;
+}
+  
