@@ -5,6 +5,7 @@ export const ReportForm = () => {
     title: "",
     description: "",
     category: "",
+    city: "", // Ajout du champ ville
     anonymous: false,
   });
 
@@ -79,6 +80,20 @@ export const ReportForm = () => {
               <option value="violence">Violence</option>
               <option value="autre">Autre</option>
             </select>
+          </div>
+
+          {/* Ville */}
+          <div>
+            <label className="block text-gray-700 font-semibold">Ville</label>
+            <input
+              type="text"
+              name="city"
+              value={formData.city}
+              onChange={handleChange}
+              className="w-full p-3 mt-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+              required
+              placeholder="Ex : Paris, Marseille..."
+            />
           </div>
 
           {/* Signalement anonyme */}
