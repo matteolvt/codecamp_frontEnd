@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./header.css";
 
 export const Header = () => {
@@ -27,34 +28,43 @@ export const Header = () => {
       <nav className="bg-white p-4 border-b h-20 flex items-center justify-center">
         <ul className="flex justify-center space-x-10 ">
           <li>
-            <a href="#" className="text-gray-700 hover:text-[#000091]">
+            <Link to="/" className="text-gray-700 hover:text-[#000091]">
               Accueil
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="text-gray-700 hover:text-[#000091]">
+            <Link
+              to="/vos-demarches"
+              className="text-gray-700 hover:text-[#000091]"
+            >
               Vos démarches
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="text-gray-700 hover:text-[#000091]">
+            <Link to="/signaler" className="text-gray-700 hover:text-[#000091]">
               Signaler un fait
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="text-gray-700 hover:text-[#000091]">
+            <Link
+              to="/actualites"
+              className="text-gray-700 hover:text-[#000091]"
+            >
               Actualités
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="text-gray-700 hover:text-[#000091]">
+            <Link
+              to="/infos-ressources"
+              className="text-gray-700 hover:text-[#000091]"
+            >
               Infos et ressources
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="text-gray-700 hover:text-[#000091]">
+            <Link to="/a-propos" className="text-gray-700 hover:text-[#000091]">
               À Propos
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>

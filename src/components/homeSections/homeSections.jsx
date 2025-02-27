@@ -30,7 +30,7 @@ export const InfoCards = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-8 text-center">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-8 pb-8 text-center">
       {cards.map((card, index) => (
         <a key={index} href={card.link} className="relative block h-50">
           <div
