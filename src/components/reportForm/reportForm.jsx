@@ -7,18 +7,69 @@ export const ReportForm = () => {
     category: "",
     anonymous: false,
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: type === "checkbox" ? checked : value,
-    });
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Données soumises :", formData);
+    setError(null);
+    setSuccessMessage("");
+    setLoading(true);
+
+    // Construction du payload au format attendu par votre API (correspondant au modèle Django)
+    const payload = {
+      titre: formData.title,
+      description: formData.description,
+      categorie: formData.category,
+      localisation: "", // Ajoutez éventuellement un champ localisation dans le formulaire
+      // Pour le champ point, on envoie un objet GeoJSON Point
+      point: {
+        type: "Point",
+        coordinates: [0, 0] // Remplacez ces valeurs par celles récupérées (ex: via la géolocalisation)
+      },
+      important: false,
+      // Le champ user doit correspondre à l'ID utilisateur ; ici, vous le mettez à 1 si non anonyme
+      user: formData.anonymous ? null : 1,
+    };
+
+    fetch("http://localhost:8000/api/denonciations/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Erreur lors de l'envoi du signalement");
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("Signalement créé :", data);
+        setSuccessMessage("Signalement envoyé avec succès !");
+        // Réinitialisation du formulaire
+        setFormData({
+          title: "",
+          description: "",
+          category: "",
+          anonymous: false,
+        });
+      })
+      .catch(error => {
+        console.error("Erreur :", error);
+        setError(error.message);
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -27,6 +78,8 @@ export const ReportForm = () => {
         <h2 className="text-3xl font-extrabold mb-6 text-gray-900 text-center">
           🚨 Faites entendre votre voix !
         </h2>
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        {successMessage && <p className="text-green-500 text-center mb-4">{successMessage}</p>}
         <form onSubmit={handleSubmit} className="space-y-4 w-full">
           {/* Titre */}
           <div>
@@ -73,11 +126,11 @@ export const ReportForm = () => {
               required
             >
               <option value="">Sélectionnez une catégorie</option>
-              <option value="corruption">Corruption</option>
-              <option value="abus-de-pouvoir">Abus de pouvoir</option>
-              <option value="discrimination">Discrimination</option>
-              <option value="violence">Violence</option>
-              <option value="autre">Autre</option>
+              <option value="corruption">Corruption & Abus de pouvoir</option>
+              <option value="droits_humains">Violations des droits humains</option>
+              <option value="fraude">Fraudes & Crimes économiques</option>
+              <option value="sante_securite">Santé publique & Sécurité</option>
+              <option value="maltraitance_animale">Maltraitance animale</option>
             </select>
           </div>
 
@@ -98,9 +151,10 @@ export const ReportForm = () => {
           {/* Bouton de soumission */}
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-red-600 text-white py-3 rounded-xl text-lg font-bold transition-all hover:bg-red-700 shadow-lg"
           >
-            🚀 Envoyer le signalement
+            {loading ? "Envoi en cours..." : "🚀 Envoyer le signalement"}
           </button>
         </form>
       </div>
