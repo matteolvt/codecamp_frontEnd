@@ -5,72 +5,84 @@ export const ReportForm = () => {
     title: "",
     description: "",
     category: "",
-    city: "", // Ajout du champ ville
-    anonymous: false,
+    city: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prevData) => ({
+    const { name, value } = e.target;
+    setFormData(prevData => ({
       ...prevData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setSuccessMessage("");
     setLoading(true);
 
-    // Construction du payload au format attendu par votre API (correspondant au modèle Django)
-    const payload = {
-      titre: formData.title,
-      description: formData.description,
-      categorie: formData.category,
-      localisation: "", // Ajoutez éventuellement un champ localisation dans le formulaire
-      // Pour le champ point, on envoie un objet GeoJSON Point
-      point: {
-        type: "Point",
-        coordinates: [0, 0] // Remplacez ces valeurs par celles récupérées (ex: via la géolocalisation)
-      },
-      important: false,
-      // Le champ user doit correspondre à l'ID utilisateur ; ici, vous le mettez à 1 si non anonyme
-      user: formData.anonymous ? null : 1,
-    };
+    try {
+      // Utilisation de Nominatim pour géocoder la ville saisie
+      const geoResponse = await fetch(
+        `https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(formData.city)}&format=json`
+      );
+      const geoData = await geoResponse.json();
+      if (geoData.length === 0) {
+        throw new Error("Ville non trouvée. Veuillez vérifier le nom de la ville.");
+      }
+      // On prend le premier résultat
+      const { lat, lon } = geoData[0];
 
-    fetch("http://localhost:8000/api/denonciations/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Erreur lors de l'envoi du signalement");
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log("Signalement créé :", data);
-        setSuccessMessage("Signalement envoyé avec succès !");
-        // Réinitialisation du formulaire
-        setFormData({
-          title: "",
-          description: "",
-          category: "",
-          anonymous: false,
-        });
-      })
-      .catch(error => {
-        console.error("Erreur :", error);
-        setError(error.message);
-      })
-      .finally(() => setLoading(false));
+      // Construction du payload attendu par votre API (correspondant au modèle Django)
+      const payload = {
+        titre: formData.title,
+        description: formData.description,
+        categorie: formData.category,
+        localisation: formData.city,
+        point: {
+          type: "Point",
+          // En GeoJSON, l'ordre est [longitude, latitude]
+          coordinates: [parseFloat(lon), parseFloat(lat)]
+        },
+        important: false,
+        // Le champ "user" n'est pas envoyé car il est automatiquement attribué dans perform_create.
+      };
+
+      // Récupération du token depuis le localStorage
+      const token = localStorage.getItem("access_token");
+
+      const response = await fetch("http://localhost:8000/api/denonciations/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de l'envoi du signalement");
+      }
+      const data = await response.json();
+      console.log("Signalement créé :", data);
+      setSuccessMessage("Signalement envoyé avec succès !");
+      // Réinitialisation du formulaire
+      setFormData({
+        title: "",
+        description: "",
+        category: "",
+        city: "",
+      });
+    } catch (error) {
+      console.error("Erreur :", error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -147,20 +159,6 @@ export const ReportForm = () => {
               required
               placeholder="Ex : Paris, Marseille..."
             />
-          </div>
-
-          {/* Signalement anonyme */}
-          <div className="flex items-center gap-4">
-            <input
-              type="checkbox"
-              name="anonymous"
-              checked={formData.anonymous}
-              onChange={handleChange}
-              className="w-6 h-6 accent-red-600 rounded-md"
-            />
-            <label className="text-gray-700 font-semibold">
-              Signaler anonymement
-            </label>
           </div>
 
           {/* Bouton de soumission */}
