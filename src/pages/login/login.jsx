@@ -1,8 +1,21 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    
+    // Simuler une connexion réussie (par exemple, un token mocké et un rôle)
+    localStorage.setItem("access_token", "mock_token");
+    localStorage.setItem("user_role", "admin"); // Simuler que l'utilisateur est un admin
+  
+    // Rediriger vers le dashboard
+    navigate("/dashboard");
+  };
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
@@ -10,7 +23,7 @@ export const AuthPage = () => {
           {isLogin ? "Connexion" : "Inscription"}
         </h2>
 
-        <form className="mt-6 space-y-4">
+        <form className="mt-6 space-y-4" onSubmit={handleLogin}>
           {!isLogin && (
             <div>
               <label className="block text-gray-700 font-medium">Nom</label>
@@ -44,20 +57,6 @@ export const AuthPage = () => {
               required
             />
           </div>
-
-          {!isLogin && (
-            <div>
-              <label className="block text-gray-700 font-medium">
-                Confirmer le mot de passe
-              </label>
-              <input
-                type="password"
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                placeholder="••••••••"
-                required
-              />
-            </div>
-          )}
 
           {isLogin && (
             <div className="text-right">
