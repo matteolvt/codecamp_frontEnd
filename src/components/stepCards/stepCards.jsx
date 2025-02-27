@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export const StepCards = () => {
   const steps = [
     {
@@ -6,7 +8,7 @@ export const StepCards = () => {
         "Suivez les étapes pour soumettre une dénonciation de manière anonyme et sécurisée.",
       color: "bg-blue-900",
       arrowColor: "bg-orange-400",
-      link: "#deposer-signalement",
+      link: "/signaler",
     },
     {
       title: "Suivi de votre dossier",
@@ -29,7 +31,7 @@ export const StepCards = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-8 text-center">
       {steps.map((step, index) => (
-        <a key={index} href={step.link} className="relative block h-full">
+        <Link key={index} to={step.link} className="relative block h-full">
           <div
             className={`relative ${step.color} text-white p-6 rounded shadow flex flex-col items-center justify-between h-full`}
           >
@@ -41,7 +43,7 @@ export const StepCards = () => {
               <span className="text-black text-xl">→</span>
             </div>
           </div>
-        </a>
+        </Link>
       ))}
     </div>
   );

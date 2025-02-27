@@ -20,9 +20,13 @@ export const Header = () => {
             placeholder="Rechercher"
             className="border px-2 py-1 rounded"
           />
-          <button className="bg-[#000091] text-white px-4 py-2 rounded mr-30">
+          {/* Lien vers la page de connexion */}
+          <Link
+            to="/connexion"
+            className="bg-[#000091] text-white px-4 py-2 rounded mr-30"
+          >
             Se connecter
-          </button>
+          </Link>
         </div>
       </nav>
       <nav className="bg-white p-4 border-b h-20 flex items-center justify-center">
