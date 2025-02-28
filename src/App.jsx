@@ -10,6 +10,7 @@ import Dashboard from "./pages/dashboard/dashboard";
 import Forbidden from "./pages/Forbidden.jsx/Forbidden";
 import { Actualites } from "./pages/actualites/actualites"; // Nouvelle route Actualites
 import { Notifications } from "./components/notifications/notifications"; // Importation du composant Notifications
+import { Propos } from "./pages/propos/propos";
 
 const AppContent = () => {
   const location = useLocation();
@@ -28,6 +29,7 @@ const AppContent = () => {
           <Route path="/signaler" element={<SignalerUnFait />} />
           <Route path="/connexion" element={<AuthPage />} />
           <Route path="/actualites" element={<Actualites />} />
+          <Route path="/propos" element={<Propos />} />
           <Route
             path="/dashboard"
             element={

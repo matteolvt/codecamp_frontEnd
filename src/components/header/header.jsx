@@ -92,7 +92,7 @@ export const Header = () => {
             </Link>
           </li>
           <li>
-            <Link to="/a-propos" className="text-gray-700 hover:text-[#000091]">
+            <Link to="/propos" className="text-gray-700 hover:text-[#000091]">
               À Propos
             </Link>
           </li>
