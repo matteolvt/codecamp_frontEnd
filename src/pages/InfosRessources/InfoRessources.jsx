@@ -5,7 +5,7 @@ export const InfosRessources = () => {
           {/* 🌟 Titre principal */}
           <h1 className="text-4xl font-bold text-gray-900 mb-6">🗂 Infos & Ressources</h1>
           <p className="text-lg text-gray-700 leading-relaxed mb-8">
-            Retrouvez ici toutes les informations et ressources utiles pour mieux comprendre vos droits, les procédures et les aides disponibles**.
+            Retrouvez ici toutes les informations et ressources utiles pour mieux comprendre vos droits, les procédures et les aides disponibles.
           </p>
   
           {/* 📖 Guides & Articles */}
