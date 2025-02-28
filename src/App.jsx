@@ -11,6 +11,7 @@ import Forbidden from "./pages/Forbidden.jsx/Forbidden";
 import { Actualites } from "./pages/actualites/actualites"; // Nouvelle route Actualites
 import { Notifications } from "./components/notifications/notifications"; // Importation du composant Notifications
 import { Propos } from "./pages/propos/propos";
+import { InfosRessources } from "./pages/InfosRessources/InfoRessources";
 
 const AppContent = () => {
   const location = useLocation();
@@ -30,6 +31,7 @@ const AppContent = () => {
           <Route path="/connexion" element={<AuthPage />} />
           <Route path="/actualites" element={<Actualites />} />
           <Route path="/propos" element={<Propos />} />
+          <Route path="/infos-ressources" element={<InfosRessources />} />
           <Route
             path="/dashboard"
             element={
