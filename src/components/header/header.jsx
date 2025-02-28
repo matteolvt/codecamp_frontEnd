@@ -9,15 +9,15 @@ export const Header = () => {
   // Vérifier si un token est présent dans le localStorage
   useEffect(() => {
     const token = localStorage.getItem("access_token");
-    setIsAuthenticated(!!token); // Met à jour l'état si un token existe
+    setIsAuthenticated(!!token);
   }, []);
 
   // Fonction de déconnexion
   const handleLogout = () => {
-    localStorage.removeItem("access_token"); // Supprime le token
-    localStorage.removeItem("user_role"); // Supprime le rôle (si nécessaire)
-    setIsAuthenticated(false); // Met à jour l'état
-    navigate("/"); // Redirige vers l'accueil
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user_role");
+    setIsAuthenticated(false);
+    navigate("/");
   };
 
   return (
@@ -37,7 +37,6 @@ export const Header = () => {
             placeholder="Rechercher"
             className="border px-2 py-1 rounded"
           />
-          {/* Affiche "Se déconnecter" si l'utilisateur est connecté, sinon "Se connecter" */}
           {isAuthenticated ? (
             <button
               onClick={handleLogout}
@@ -92,7 +91,7 @@ export const Header = () => {
             </Link>
           </li>
           <li>
-            <Link to="/a-propos" className="text-gray-700 hover:text-[#000091]">
+            <Link to="/propos" className="text-gray-700 hover:text-[#000091]">
               À Propos
             </Link>
           </li>

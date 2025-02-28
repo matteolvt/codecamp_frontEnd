@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { HeroSectionDem } from "../../components/heroSectionDem/heroSectionDem";
 import { StepCards } from "../../components/stepCards/stepCards";
-import "./vosDemarches.css";
 
-export const VosDemarches = () => {
+export const VosDemarches = ({ addNotification }) => {
   const [userId, setUserId] = useState(null);
   const [denonces, setDenonces] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Récupérer les infos de l'utilisateur connecté
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (!token) {
@@ -36,7 +34,6 @@ export const VosDemarches = () => {
       });
   }, []);
 
-  // Une fois l'id utilisateur connu, récupérer et filtrer les dénonciations
   useEffect(() => {
     if (!userId) return;
     const token = localStorage.getItem("access_token");
@@ -52,7 +49,6 @@ export const VosDemarches = () => {
       })
       .then((data) => {
         if (data.features) {
-          // Filtrer les dénonciations appartenant à l'utilisateur connecté
           const myDenonces = data.features.filter(
             (feature) => feature.properties.user === userId
           );
@@ -68,7 +64,6 @@ export const VosDemarches = () => {
       });
   }, [userId]);
 
-  // 🔴 Fonction pour SUPPRIMER une dénonciation
   const handleDelete = async (id) => {
     const token = localStorage.getItem("access_token");
     if (!window.confirm("Voulez-vous vraiment supprimer cette dénonciation ?")) return;
@@ -83,12 +78,11 @@ export const VosDemarches = () => {
         throw new Error("Échec de la suppression");
       }
 
-      // 🔄 Mise à jour de la liste après suppression
       setDenonces((prevDenonces) => prevDenonces.filter((d) => d.id !== id));
-      alert("Dénonciation supprimée avec succès !");
+      addNotification("📢 Dénonciation supprimée avec succès !");
     } catch (error) {
       console.error("Erreur lors de la suppression :", error);
-      alert("Erreur lors de la suppression !");
+      addNotification("❌ Erreur lors de la suppression !");
     }
   };
 
@@ -96,41 +90,41 @@ export const VosDemarches = () => {
     <div className="flex flex-col items-center">
       <HeroSectionDem />
       <StepCards />
-      <div className="w-full max-w-3xl p-6">
-        <h2 className="text-2xl font-bold mb-4">Vos dénonciations</h2>
+      <div className="w-full max-w-5xl p-8">
+        <h2 className="text-3xl font-bold text-gray-900 text-center mb-6">📋 Vos Dénonciations</h2>
         {loading ? (
-          <p>Chargement...</p>
+          <p className="text-center text-gray-600">Chargement...</p>
         ) : error ? (
-          <p className="text-red-500">{error}</p>
+          <p className="text-center text-red-500">{error}</p>
         ) : denonces.length === 0 ? (
-          <p>Aucune dénonciation trouvée.</p>
+          <p className="text-center text-gray-500">Aucune dénonciation trouvée.</p>
         ) : (
-          <ul className="space-y-4">
+          <div className={`grid ${denonces.length === 1 ? "grid-cols-1 justify-center" : "grid-cols-1 md:grid-cols-2 justify-center"} gap-8`}>
             {denonces.map((feature) => (
-              <li key={feature.id} className="p-4 border rounded flex flex-col space-y-2">
-                <h3 className="font-bold">{feature.properties.titre}</h3>
-                <p>{feature.properties.description}</p>
-                <p>
+              <div
+                key={feature.id}
+                className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg mx-auto relative"
+              >
+                <h3 className="text-lg font-bold text-gray-800">{feature.properties.titre}</h3>
+                <p className="text-gray-600 mt-2">{feature.properties.description}</p>
+                <p className="text-sm text-gray-500 mt-2">
                   <strong>Catégorie :</strong> {feature.properties.categorie}
                 </p>
-                <p>
+                <p className="text-sm text-gray-500">
                   <strong>Localisation :</strong> {feature.properties.localisation}
                 </p>
-                <p>
-                  <strong>Date :</strong>{" "}
-                  {new Date(feature.properties.date_creation).toLocaleString()}
+                <p className="text-sm text-gray-500">
+                  <strong>Date :</strong> {new Date(feature.properties.date_creation).toLocaleString()}
                 </p>
-
-                {/* 🔴 Bouton Supprimer uniquement */}
                 <button
                   onClick={() => handleDelete(feature.id)}
-                  className="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 mt-2"
+                  className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-700 transition"
                 >
                   🗑 Supprimer
                 </button>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
     </div>
