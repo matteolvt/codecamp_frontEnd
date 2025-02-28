@@ -45,6 +45,8 @@ const AppContent = () => {
           <Route path="/signaler" element={<SignalerUnFait />} />
           <Route path="/connexion" element={<AuthPage />} />
           <Route path="/actualites" element={<Actualites />} />
+          <Route path="/propos" element={<Propos />} />
+          <Route path="/infos-ressources" element={<InfosRessources />} />
           <Route
             path="/dashboard"
             element={
